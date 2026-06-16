@@ -50,6 +50,8 @@ and uses the published image:
 For public deployment, use the deployment wrapper files rather than this
 private source tree.
 
+The published image supports `linux/amd64` and `linux/arm64`.
+
 For a new host, clone the public deployment repo and run the installer helper
 first:
 
@@ -57,13 +59,11 @@ first:
 git clone https://github.com/dougle03/caddy-ui-public.git
 cd caddy-ui-public
 ./scripts/install.sh
-docker compose up -d
 ```
 
-It checks Docker and Docker Compose, detects the Docker socket GID, helps you
-confirm the Caddy container and host Caddy directory, creates `.env` from
-`.env.example` if needed, and can optionally apply ACLs for container UID
-`10001` without using `chmod 777`.
+It checks Docker and Docker Compose, auto-detects the Caddy container and host
+mount in the common case, generates `.env`, and starts the stack after a single
+confirmation. Use `--manual` only when detection is ambiguous.
 
 `scripts/install.sh` is mainly for first install or deliberate reconfiguration.
 Existing users normally do not need to run it for a routine update.
@@ -115,8 +115,9 @@ file copied.
    the detected Caddyfile. Import does not modify the live file.
 
 For a fresh host, `APP_LISTEN_IP=0.0.0.0` is acceptable if
-`APP_ALLOWED_SUBNETS` is restricted correctly. Login is required for all
-application pages.
+`APP_ALLOWED_SUBNETS` is restricted correctly. The public installer uses a safe
+default that includes local, Docker bridge, and common private/VPN ranges; you
+can tighten it later. Login is required for all application pages.
 
 ## Updating an existing installation
 
