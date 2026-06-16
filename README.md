@@ -68,6 +68,28 @@ confirmation. Use `--manual` only when detection is ambiguous.
 `scripts/install.sh` is mainly for first install or deliberate reconfiguration.
 Existing users normally do not need to run it for a routine update.
 
+## Installer permission requirements
+
+The installer is intended to be run by the person who administers the
+Docker/Caddy host. In practice that means a sudo-capable user, or a user
+already configured for Docker and Caddy administration.
+
+The user running the installer must be able to:
+
+- use Docker and Docker Compose
+- create or manage the `caddy-ui` install directory
+- read and write the host Caddyfile directory
+- grant ACL access to container UID `10001` where required
+- restart or reload the existing Caddy container
+
+This is appropriate because `caddy-ui` edits and reloads Caddy and also uses
+the Docker socket to inspect and manage the existing Caddy container.
+
+The installer must not use `chmod 777`. If it cannot safely apply the required
+permissions itself, it should print the exact `sudo` command that the host
+administrator needs to run. Do not treat this as a tool for completely
+unprivileged users.
+
 The public deployment wrapper repo should point at
 `ghcr.io/dougle03/caddy-ui:latest`.
 
@@ -159,6 +181,8 @@ After installing or updating, sign in to the UI and check the
 - The container entrypoint preserves supplementary groups when dropping
   privileges so the app process keeps Docker socket group access when
   `group_add` is used in Compose.
+- See [Installer permission requirements](#installer-permission-requirements)
+  for who should run the installer and which host permissions are expected.
 - If the live Caddyfile bind mount is owned by another user, grant that UID
   write access with a normal group/ACL rule instead of `chmod 777`.
 - The app never needs world-writable permissions on its database or backup
@@ -233,7 +257,8 @@ This is not authentication. Anyone with the full URL can still access it.
 The Docker socket grants extremely broad host control. It is mounted in phase 1
 because validation, reload, logs, status, and hash generation all target the
 existing independently managed Caddy container. Keep this UI LAN-restricted and
-authenticated. See [SECURITY.md](SECURITY.md).
+authenticated. See [Installer permission requirements](#installer-permission-requirements)
+and [SECURITY.md](SECURITY.md).
 
 ## Development and tests
 
