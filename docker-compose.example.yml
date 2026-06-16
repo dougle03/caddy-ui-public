@@ -1,0 +1,20 @@
+services:
+  caddy-admin-ui:
+    image: ghcr.io/dougle03/caddy-ui:latest
+    container_name: caddy-admin-ui
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "${APP_LISTEN_IP:-0.0.0.0}:${APP_PORT:-5059}:5000"
+    volumes:
+      - ${CADDY_HOST_DIR:?Set CADDY_HOST_DIR to the host directory that contains the live Caddyfile}:/managed-caddy
+      - caddy_admin_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    group_add:
+      - "${DOCKER_GID:?Set DOCKER_GID to the group ID that owns /var/run/docker.sock}"
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  caddy_admin_data:
