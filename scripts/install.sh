@@ -3,6 +3,8 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 ENV_EXAMPLE="${ROOT_DIR}/.env.example"
+COMPOSE_EXAMPLE="${ROOT_DIR}/docker-compose.example.yml"
+COMPOSE_FILE="${ROOT_DIR}/docker-compose.yml"
 ENV_FILE="${ROOT_DIR}/.env"
 APP_UID="10001"
 
@@ -186,6 +188,16 @@ run_configuration_flow() {
     printf '  docker compose up -d --build\n'
 }
 
+ensure_compose_file_for_first_install() {
+    if [[ -f "${COMPOSE_FILE}" ]]; then
+        return
+    fi
+    if [[ -f "${COMPOSE_EXAMPLE}" ]]; then
+        cp "${COMPOSE_EXAMPLE}" "${COMPOSE_FILE}"
+        printf 'Created %s from %s\n' "${COMPOSE_FILE}" "${COMPOSE_EXAMPLE}"
+    fi
+}
+
 check_existing_install() {
     local docker_gid="$1"
     local env_docker_gid="$2"
@@ -246,6 +258,7 @@ docker_gid="$(stat -c '%g' /var/run/docker.sock)"
 
 if [[ ! -f "${ENV_FILE}" ]]; then
     printf 'No .env file found. Proceeding with first-install setup.\n'
+    ensure_compose_file_for_first_install
     run_configuration_flow "caddy" "/srv/caddy" "0.0.0.0" "5059" "/managed-caddy/Caddyfile" "/etc/caddy/Caddyfile" "${docker_gid}"
     exit 0
 fi

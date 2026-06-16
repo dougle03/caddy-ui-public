@@ -50,10 +50,14 @@ and uses the published image:
 For public deployment, use the deployment wrapper files rather than this
 private source tree.
 
-For a new host, you can use the installer helper first:
+For a new host, clone the public deployment repo and run the installer helper
+first:
 
 ```bash
+git clone https://github.com/dougle03/caddy-ui-public.git
+cd caddy-ui-public
 ./scripts/install.sh
+docker compose up -d
 ```
 
 It checks Docker and Docker Compose, detects the Docker socket GID, helps you
@@ -63,6 +67,9 @@ confirm the Caddy container and host Caddy directory, creates `.env` from
 
 `scripts/install.sh` is mainly for first install or deliberate reconfiguration.
 Existing users normally do not need to run it for a routine update.
+
+The public deployment wrapper repo should point at
+`ghcr.io/dougle03/caddy-ui:latest`.
 
 ## Public Deployment Wrapper
 
@@ -134,15 +141,13 @@ Typical update commands:
   docker compose up -d --build
   ```
 
-After updating, sign in to the UI and check the **Diagnostics** page.
-
 For private/local development in this source repo, use:
 
 ```bash
 docker compose up -d --build
 ```
 
-After first install or update, sign in to the UI and check the
+After installing or updating, sign in to the UI and check the
 **Diagnostics** page.
 
 ## First-run storage and ownership
