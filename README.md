@@ -41,6 +41,8 @@ Admin API and does not replace the Caddyfile on startup or import.
 - A reload failure is recorded and the previous file remains available on the
   Backups page and on disk.
 
+<img width="2702" height="1504" alt="image" src="https://github.com/user-attachments/assets/04559aee-987c-4964-9d9b-b82570acb182" />
+
 ## Deployment
 
 The repository keeps the current working `docker-compose.yml` compatible with
