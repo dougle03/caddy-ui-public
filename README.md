@@ -218,10 +218,13 @@ The page also includes a copyable report for troubleshooting.
    preserved advanced `tls` blocks.
 3. Inspect **Advanced / unmanaged** site blocks. They are view-only in the
    normal form and are preserved during saves.
-4. Open **Preview** and review the complete candidate and diff.
-5. Select **Validate only**.
-6. After successful validation and review, select **Apply and reload**.
-7. Use **Backups** to restore an earlier file. Rollback itself first backs up
+4. Review **Preserved raw blocks** on the dashboard for live Caddyfile entries
+   that the simple editor does not manage. These blocks stay active in
+   generated config and can be opened read-only with **View raw config**.
+5. Open **Preview** and review the complete candidate and diff.
+6. Select **Validate only**.
+7. After successful validation and review, select **Apply and reload**.
+8. Use **Backups** to restore an earlier file. Rollback itself first backs up
    the current file, validates the selected backup, replaces the live file, and
    reloads Caddy.
 
