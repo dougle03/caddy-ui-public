@@ -57,6 +57,12 @@ private source tree.
 
 The published image supports `linux/amd64` and `linux/arm64`.
 
+Release-worthy changes must bump the app version in `app/version.py`. The
+published container image tag must match that app version exactly. Publish a
+fixed rollback tag such as `ghcr.io/dougle03/caddy-ui:v2026.06.16` and also
+update `ghcr.io/dougle03/caddy-ui:latest` as a convenience tag. Do not invent
+a separate container version unrelated to the app version.
+
 For a new host, clone the public deployment repo and run the installer helper
 first:
 
