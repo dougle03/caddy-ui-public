@@ -3,6 +3,9 @@
 Local, authenticated Flask UI for conservatively importing, editing, validating,
 applying, and rolling back an existing Dockerised Caddy configuration.
 
+<img width="2700" height="1534" alt="image" src="https://github.com/user-attachments/assets/593f1d97-4cf1-4730-aa9a-76fe0b1412fc" />
+
+
 This project is currently prepared for a private-source, public-container
 distribution model:
 
